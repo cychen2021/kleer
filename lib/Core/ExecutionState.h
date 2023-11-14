@@ -22,6 +22,7 @@
 #include "klee/Module/KInstIterator.h"
 #include "klee/Solver/Solver.h"
 #include "klee/System/Time.h"
+#include "llvm/IR/Instruction.h"
 
 #include <map>
 #include <memory>
@@ -248,6 +249,8 @@ public:
   /// @brief Disables forking for this state. Set by user code
   bool forkDisabled = false;
 
+  std::vector<const llvm::Instruction*> instructions;
+
 public:
 #ifdef KLEE_UNITTEST
   // provide this function only in the context of unittests
@@ -282,6 +285,10 @@ public:
   std::uint32_t getID() const { return id; };
   void setID() { id = nextID++; };
   static std::uint32_t getLastID() { return nextID - 1; };
+
+  void recordInstruction(const llvm::Instruction* inst) {
+    instructions.push_back(inst);
+  }
 };
 
 struct ExecutionStateIDCompare {

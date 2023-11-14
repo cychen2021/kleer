@@ -120,6 +120,11 @@ namespace {
                 cl::desc("Write .sym.path files for each test case (default=false)"),
                 cl::cat(TestCaseCat));
 
+  cl::opt<bool>
+  WriteInstructions("write-instructions",
+                    cl::desc("TODO"),
+                    cl::cat(TestCaseCat));
+
 
   /*** Startup options ***/
 
@@ -547,6 +552,15 @@ void KleeHandler::processTestCase(const ExecutionState &state,
       auto f = openTestFile("kquery", id);
       if (f)
         *f << constraints;
+    }
+
+    if (WriteInstructions) {
+      std::string instructions;
+      m_interpreter->getInstructionLog(state, instructions);
+      auto f = openTestFile("linst", id);
+      if (f) {
+        *f << instructions;
+      }
     }
 
     if (WriteCVCs) {
