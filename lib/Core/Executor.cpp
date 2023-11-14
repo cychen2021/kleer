@@ -129,6 +129,12 @@ namespace {
 
 /*** Test generation options ***/
 
+cl::opt<bool> RecordInstructions(
+  "record-instructions",
+  cl::init(true),
+  cl::desc("TODO"),
+  cl::cat(TestGenCat));
+
 cl::opt<bool> DumpStatesOnHalt(
     "dump-states-on-halt",
     cl::init(true),
@@ -2102,6 +2108,9 @@ Function *Executor::getTargetFunction(Value *calledVal) {
 
 void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
   Instruction *i = ki->inst;
+  if (RecordInstructions) {
+    state.recordInstruction(i);
+  }
   switch (i->getOpcode()) {
     // Control flow
   case Instruction::Ret: {
@@ -4623,6 +4632,16 @@ unsigned Executor::getPathStreamID(const ExecutionState &state) {
 unsigned Executor::getSymbolicPathStreamID(const ExecutionState &state) {
   assert(symPathWriter);
   return state.symPathOS.getID();
+}
+
+void Executor::getInstructionLog(const ExecutionState &state, std::string& res) {
+  const auto& instructions = state.instructions;
+  std::string Str;
+  llvm::raw_string_ostream instruction_log(Str);
+  for (auto& instruction: instructions) {
+    instruction->print(instruction_log);
+  }
+  res = instruction_log.str();
 }
 
 void Executor::getConstraintLog(const ExecutionState &state, std::string &res,

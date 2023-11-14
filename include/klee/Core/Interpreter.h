@@ -155,6 +155,7 @@ public:
   virtual void getConstraintLog(const ExecutionState &state,
                                 std::string &res,
                                 LogType logFormat = STP) = 0;
+  virtual void getInstructionLog(const ExecutionState &state, std::string& res);
 
   virtual bool getSymbolicSolution(const ExecutionState &state,
                                    std::vector<
