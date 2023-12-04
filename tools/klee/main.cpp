@@ -123,7 +123,8 @@ namespace {
   cl::opt<bool>
   WriteInstructions("write-instructions",
                     cl::desc("TODO"),
-                    cl::cat(TestCaseCat));
+                    cl::cat(TestCaseCat),
+                    cl::init(true));
 
 
   /*** Startup options ***/

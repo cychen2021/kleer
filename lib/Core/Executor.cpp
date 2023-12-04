@@ -4631,6 +4631,7 @@ void Executor::getInstructionLog(const ExecutionState &state, std::string& res) 
   llvm::raw_string_ostream instruction_log(Str);
   for (auto& instruction: instructions) {
     instruction->print(instruction_log);
+    instruction_log << "\n";
   }
   res = instruction_log.str();
 }
