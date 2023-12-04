@@ -553,7 +553,7 @@ public:
 
   unsigned getSymbolicPathStreamID(const ExecutionState &state) override;
 
-  void getInstructionLog(const ExecutionState &state, std::string& res);
+  void getInstructionLog(const ExecutionState &state, std::string& res) override;
 
   void getConstraintLog(const ExecutionState &state, std::string &res,
                         Interpreter::LogType logFormat =
